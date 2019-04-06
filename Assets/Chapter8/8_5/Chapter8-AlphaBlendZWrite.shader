@@ -17,7 +17,9 @@ Shader "Unity Shaders Book/Chapter 8/Alpha Blending ZWrite"
 		// Extra pass that renders to depth buffer only
 		Pass{
 			ZWrite On
+			// ShaderLab中用于设置颜色通道的写掩码 为0时意味着不 写入任何颜色通道
 			ColorMask 0
+			
 		}
 
         Pass{
