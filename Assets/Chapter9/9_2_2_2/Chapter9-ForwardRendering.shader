@@ -1,14 +1,14 @@
 ﻿//Shader "Custom/Chapter9-ForwardRendering"
-Shader "Unity Shaders Book/Chapter 9/ForwardRendering"
+Shader "Unity Shaders Book/Chapter 9/ForwardRendering2"
 {
 	Properties
 	{
-	_Diffuse("Diffuse",Color) = (1,1,1,1)
-	_Specular("Specular",Color) = (1,1,1,1)
-	_Gloss("Gloss",Range(8.0,256)) = 20
+		_Diffuse("Diffuse",Color) = (1,1,1,1)
+		_Specular("Specular",Color) = (1,1,1,1)
+		_Gloss("Gloss",Range(8.0,256)) = 20
 	}
 
-		SubShader
+	SubShader
 	{
 		Tags { "RenderType" = "Opaque" }
 
@@ -71,10 +71,8 @@ Shader "Unity Shaders Book/Chapter 9/ForwardRendering"
 
 		Pass{
 			// Pass for other pixel lights
-			Tags{
-			"LightModel" = "ForwardAdd"
-			}
-
+			Tags { "LightMode"="ForwardAdd" }
+			
 			Blend One One
 
 			CGPROGRAM
@@ -90,7 +88,7 @@ Shader "Unity Shaders Book/Chapter 9/ForwardRendering"
 
 			fixed4 _Diffuse;
 			fixed4 _Specular;
-			float _Gloss; 
+			float _Gloss;
 
 			struct a2v {
 				float4 vertex :POSITION;
@@ -132,7 +130,7 @@ Shader "Unity Shaders Book/Chapter 9/ForwardRendering"
 						// 光照衰减
 						fixed atten = tex2D(_LightTexture0, dot(lightCoord, lightCoord).rr).UNITY_ATTEN_CHANNEL;
 					#elif defined(SPOT)
-						float3 lightCoord = mul(unity_WorldToLight, float4(i.worldPos, 1));
+						float4 lightCoord = mul(unity_WorldToLight, float4(i.worldPos, 1));
 						fixed atten = (lightCoord.z > 0) * tex2D(_LightTexture0, lightCoord.xy / lightCoord.w + 0.5).w *
 						tex2D(_LightTextureB0, dot(lightCoord, lightCoord).rr)UNITY_ATTEN_CHANNEL;
 					#else
@@ -149,5 +147,5 @@ Shader "Unity Shaders Book/Chapter 9/ForwardRendering"
 
 
 	}
-		FallBack "Diffuse"
+		FallBack "Specular"
 }
